@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StorageApi.Models
+namespace StorageApi.Models.Entities
 {
     public class Product
     {
@@ -8,7 +8,7 @@ namespace StorageApi.Models
        
         [Required]
         [StringLength(15)]
-        public string? Name { get; set; }
+        public required string Name { get; set; } = string.Empty;
 
         [Range(0, 10000)]
         public int Price { get; set; }
@@ -16,11 +16,11 @@ namespace StorageApi.Models
 
         [Required]
         [StringLength(20)]
-        public string? Shelf { get; set; }
+        public required string Shelf { get; set; } = string.Empty;
         public int Count { get; set; }
 
         [Required]
         [StringLength(200)]
-        public string? Description { get; set; }
+        public required string Description { get; set; } = string.Empty;
     }
 }
