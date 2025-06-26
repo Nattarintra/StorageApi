@@ -6,13 +6,13 @@ namespace StorageApi.Controllers.Services
     public class ProductService
     {
         public ProductDTOCalc GetCalculatedProduct(Product product)
-        {
-            var tocalInventoryValue = product.Price * product.Count;
+        { 
             if (product == null)
             {
                 throw new ArgumentNullException(nameof(product), "Product cannot be null");
             }
-            return new ProductDTOCalc
+            var tocalInventoryValue = product.Price * product.Count;
+            var productDtos = new ProductDTOCalc
             {
                 Id = product.Id,
                 Name = product.Name,
@@ -21,6 +21,7 @@ namespace StorageApi.Controllers.Services
                 TotalInventoryValue = tocalInventoryValue
 
             };
+            return productDtos;
         }
     }
 }
