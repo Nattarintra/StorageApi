@@ -19,6 +19,7 @@ namespace StorageApi
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<ProductService>();
+            builder.Services.AddScoped<ProductStatsService>();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();

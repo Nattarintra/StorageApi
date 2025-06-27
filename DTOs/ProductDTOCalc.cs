@@ -2,9 +2,10 @@
 
 namespace StorageApi.DTOs
 {
-    public class ProductDTOCalc
+    public class ProductDtoCalc
     {
         public int Id { get; set; }
+
         [Required]
         [StringLength(15)]
         public required string Name { get; set; }

@@ -18,11 +18,13 @@ namespace StorageApi.Controllers
     {
         private readonly StorageApiContext _context;
         private readonly ProductService _productService;
+        private readonly ProductStatsService _productStatsService;
 
-        public ProductsController(StorageApiContext context, ProductService productService)
+        public ProductsController(StorageApiContext context, ProductService productService, ProductStatsService productStatsService)
         {
             _context = context;
             _productService = productService;
+            _productStatsService = productStatsService;
         }
 
         // GET: api/Products
@@ -48,7 +50,7 @@ namespace StorageApi.Controllers
         // GET: api/Products/1/calc 
         [HttpGet("{id}/calc")]
 
-        public async Task<ActionResult<ProductDTOCalc>> GetCalculatedProduct(int id)
+        public async Task<ActionResult<ProductDtoCalc>> GetCalculatedProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
             if(product == null) return NotFound();
@@ -58,6 +60,16 @@ namespace StorageApi.Controllers
             return Ok(result);
 
         }
+
+        [HttpGet("stats")]
+        public async Task<ActionResult<ProductDtoStats>> GetStatsProduct()
+            
+        {
+            var products = await _context.Products.ToListAsync();
+            var productStats = _productStatsService.GetProductStats(products);
+            return Ok(productStats);
+        }
+
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

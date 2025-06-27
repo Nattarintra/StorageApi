@@ -2,7 +2,7 @@
 
 namespace StorageApi.DTOs
 {
-    public class ProductCreateDTO
+    public class ProductCreateDto
     {
         [Required]
         [StringLength(15)]
