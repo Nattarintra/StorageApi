@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StorageApi.Controllers.Services;
 using StorageApi.Data;
 using StorageApi.DTOs;
 using StorageApi.Models.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static StorageApi.DTOs.ProductDtoSearch;
 
 namespace StorageApi.Controllers
 {
@@ -68,6 +69,31 @@ namespace StorageApi.Controllers
             var products = await _context.Products.ToListAsync();
             var productStats = _productStatsService.GetProductStats(products);
             return Ok(productStats);
+        }
+
+        [HttpGet("search")]
+      
+        public async Task<ActionResult<IEnumerable<ProductDtoSearch>>> SearchProduct(string? category, string? name)
+        {
+            var query = _context.Products.AsQueryable();
+            
+            
+            if (!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(p => p.Category.ToLower().Contains(category.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(name.ToLower()));
+            }
+            
+            var products = await query
+                .Select(p => new SearchProduct(p.Category, p.Name))              
+                .ToListAsync();
+           
+            if (products.Count == 0) { return NotFound("No products found"); }
+
+            return Ok(products);
         }
 
 
